@@ -7,7 +7,7 @@ public class YandexMarketTests {
 
     @Test
     void selenideSearchTest(){
-        //открыть яндекс
+        //открыть яндекс 321
         open("https://yandex.ru");
         //Кликнуть на «Маркет»
         $("a[data-id='market']").click();
