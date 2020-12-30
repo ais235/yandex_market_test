@@ -1,13 +1,18 @@
 import com.codeborne.selenide.Condition;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.By;
 
+import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.*;
 import static io.qameta.allure.Allure.step;
 
 public class YandexMarketTests {
 
+
     @Test
-    public void selenideSearchTest(){
+    @DisplayName("Тест на поиск ")
+    public void selenideSearchTest() {
         step("Открываем главную страницу яндекса", () -> {
             open("https://yandex.ru");
         });
@@ -16,24 +21,27 @@ public class YandexMarketTests {
             $("a[data-id='market']").click();
         });
 
-        step("переход на соседнюю вкладку", () -> {
+        step("Переход на соседнюю вкладку", () -> {
             switchTo().window(1);
         });
 
-        step("В поле поиска ввести «ноутбуки»", () -> {
-            $("#header-search").setValue("ноутбуки");
+        step("Выбираем раздел Компьютеры", () -> {
+            $$("[role='tablist'] span").findBy(text("Компьютеры")).click();
         });
 
-        step("Проверить что поле поиска содержит «ноутбуки»", () -> {
-            $("#header-search").shouldHave(Condition.value("ноутбуки"));
+        step("Выбираем раздел Ноутбуки", () -> {
+//            $$("div[data-apiary-widget-name='@MarketNode/NavigationTree'] a").findBy(linkText("Ноутбуки")).click();
+            $(By.linkText("Ноутбуки")).click();
         });
 
-        step("Нажать «Найти»", () -> {
-            $("button[type='submit']").click();
+        step("Выбираем цену от до", () -> {
+            $("input[name='Цена от']").setValue("10000");
+            $("input[name='Цена до']").setValue("30000");
         });
-        step("Проверяем что нашлись ноутбуки", () -> {
-            $("div[data-apiary-widget-name='@MarketNode/SearchHeadline']").shouldHave(Condition.text("Ноутбуки"));
+
+        step("Выбрать производителя HP и Lenovo", () -> {
+            $x("//fieldset//span[contains(text(),'HP')]").click();
+            $x("//fieldset//span[contains(text(),'Lenovo')]").click();
         });
     }
-
 }
