@@ -1,3 +1,9 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+}
+
 plugins {
     id 'groovy'
     id 'java'
@@ -13,8 +19,10 @@ repositories {
     mavenCentral()
 }
 
-tasks.withType(JavaCompile) {
-    options.encoding = 'UTF-8'
+ext {
+    allureVersion = "2.13.7"
+    selenideVersion = "5.16.2"
+    junitVersion = "5.7.0"
 }
 
 allure {
@@ -25,21 +33,22 @@ allure {
     }
 }
 
+dependencies {
+    testImplementation "org.aspectj:aspectjweaver:1.9.5"
+    testImplementation "com.codeborne:selenide:${selenideVersion}"
+    testImplementation "io.qameta.allure:allure-selenide:${allureVersion}"
+    testImplementation "com.github.javafaker:javafaker:1.0.2"
+    testImplementation "ch.qos.logback:logback-classic:1.2.3"
+
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitVersion}"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junitVersion}"
+}
+
+tasks.withType(JavaCompile) {buildscript
+    options.encoding = 'UTF-8'
+}
+
 test {
+    systemProperties = System.properties
     useJUnitPlatform()
 }
-
-dependencies {
-    compile("com.squareup.retrofit2:retrofit:2.9.0")
-    compile("com.squareup.retrofit2:converter-jackson:2.9.0")
-    compile("com.squareup.okhttp3:logging-interceptor:3.9.0")
-
-    compile("com.codeborne:selenide:5.15.1")
-    compile("io.qameta.allure:allure-selenide:2.13.6")
-
-    compile("org.junit.jupiter:junit-jupiter-api:5.7.0")
-    compile("org.junit.jupiter:junit-jupiter-engine:5.7.0")
-    compile("org.junit.jupiter:junit-jupiter-params:5.7.0")
-}
-
-
